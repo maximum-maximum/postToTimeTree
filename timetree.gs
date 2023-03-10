@@ -40,7 +40,6 @@ const getSync = async () => {
 
 // https://developers.timetreeapp.com/ja/docs/api/oauth-app#create-an-event
 const postToTimeTree = async (event) => {
-  const properties = PropertiesService.getUserProperties();
   const accessToken = properties.getProperty("accessToken");
   const calendarId = properties.getProperty("calendarId");
   const endPoint = `https://timetreeapis.com/calendars/${calendarId}/events`;
@@ -77,7 +76,7 @@ const postToTimeTree = async (event) => {
   };
 
   try {
-    res = await UrlFetchApp.fetch(endPoint, options);
+    await UrlFetchApp.fetch(endPoint, options);
   } catch (e) {
     throw e;
   } finally {
