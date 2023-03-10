@@ -23,12 +23,9 @@ const getSync = async () => {
   }
 
   // 前回のCalendar.Events.list()実行時との予定一覧のうち、更新されたもののみの一覧が取得できる
-  // console.log(events);
   console.log(events.items[0]);
-  // console.log(syncToken);
   
   properties.setProperty("nextSyncToken", events.nextSyncToken);
-  // console.log(events.nextSyncToken);
 
   try {
     if (events.items[0].status === "confirmed") {
@@ -47,7 +44,7 @@ const postToTimeTree = async (event) => {
   const accessToken = properties.getProperty("accessToken");
   const calendarId = properties.getProperty("calendarId");
   const endPoint = `https://timetreeapis.com/calendars/${calendarId}/events`;
-  console.log(accessToken, endPoint);
+  
   const body = {
     data: {
       attributes: {
