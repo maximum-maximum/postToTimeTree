@@ -13,6 +13,7 @@ const getSync = async () => {
   // Google Calendar APIを用いて予定の一覧を取得する
   try {
     events = await Calendar.Events.list(calendarId, options);
+    console.log(events);
   } catch (e) {
     throw e;
   }
@@ -23,12 +24,22 @@ const getSync = async () => {
   }
 
   // 前回のCalendar.Events.list()実行時との予定一覧のうち、更新されたもののみの一覧が取得できる
-  console.log(events.items[0]);
-  
   properties.setProperty("nextSyncToken", events.nextSyncToken);
-
+  
+  const event = events.items[0];
   try {
-    if (events.items[0].status === "confirmed") {
+    // event.descriptionがある場合に遷移。
+    const isPrivate = event.description.includes("private");
+    if (isPrivate) {
+      console.info("非公開の予定です");
+      return;
+    }
+  } catch {
+    // event.descriptionがない場合に遷移。
+  }
+  
+  try {
+    if (event.status === "confirmed") {
       await postToTimeTree(events.items[0]);     
     }
   } catch (e) {
